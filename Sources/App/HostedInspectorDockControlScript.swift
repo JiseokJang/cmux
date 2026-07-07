@@ -52,7 +52,11 @@ struct HostedInspectorDockControlScript {
                 const detached = WI.__cmuxDetachedFromHostWindow ||
                     dockMatches(dockConfiguration.Detached, "detached") ||
                     dockMatches(dockConfiguration.Undocked, "undocked");
-                const hideDockTargets = detached;
+                // PROBE(dtdock): keep WebKit's native dock-to-side/bottom buttons
+                // visible on the detached inspector window so we can test whether
+                // WebKit's own redock crashes in platformAttach. No cmux interception,
+                // reparenting, or attach selector is involved.
+                const hideDockTargets = false;
                 updateButton(WI._dockLeftTabBarButton, hideDockTargets || disallowSideDock || dockedLeft);
                 updateButton(WI._dockRightTabBarButton, hideDockTargets || disallowSideDock || dockedRight);
                 updateButtons([
